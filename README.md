@@ -1,4 +1,4 @@
-# nightmarechan-play
+# Boilerplate template
 
 npm i - install all dependencies<br>
 
