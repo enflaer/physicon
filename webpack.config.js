@@ -5,7 +5,7 @@ const glob = require("glob");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -48,7 +48,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: devMode ? '[name].js' : '[name].[hash].js',
-        publicPath: "/dist"
+        publicPath: "/"
     },
     devtool: "source-map",
     module: {
@@ -88,10 +88,26 @@ module.exports = {
             },
         ]
     },
-    plugins: pluginsOptions
+    plugins: pluginsOptions,
     // ,optimization: {
     //     minimizer: [new TerserPlugin({
     //         test: /\.(js)(\?.*)?$/i,
     //     })],
     // }
+    stats: {
+        colors: true,
+        hash: true,
+        version: true,
+        timings: true,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: true,
+        warnings: true,
+        publicPath: false
+    },
 };
