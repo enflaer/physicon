@@ -1,0 +1,140 @@
+@font-face {
+  font-family: 'geometria';
+  src: local('Geometria-Regular'), url("../fonts/geometria/geometria.woff2") format('woff2'), url("../fonts/geometria/geometria.woff") format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'geometria';
+  src: local('Geometria-Light'), url("../fonts/geometria/geometria_light.woff2") format('woff2'), url("../fonts/geometria/geometria_light.woff") format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'geometria';
+  src: local('Geometria-Medium'), url("../fonts/geometria/geometria_medium.woff2") format('woff2'), url("../fonts/geometria/geometria_medium.woff") format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'geometria';
+  src: local('Geometria-Bold'), url("../fonts/geometria/geometria_bold.woff2") format('woff2'), url("../fonts/geometria/geometria_bold.woff") format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'geometria';
+  src: local('Geometria-Black'), url("../fonts/geometria/geometria_black.woff2") format('woff2'), url("../fonts/geometria/geometria_black.woff") format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'gotham';
+  src: url("../fonts/gotham/gotham_regular.woff2") format('woff2'), url("../fonts/gotham/gotham_regular.woff") format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'gotham';
+  src: url("../fonts/gotham/gotham_bold.woff2") format('woff2'), url("../fonts/gotham/gotham_bold.woff") format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'gotham';
+  src: url("../fonts/gotham/gotham_black.woff2") format('woff2'), url("../fonts/gotham/gotham_black.woff") format('woff');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Light.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Light.woff") format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Heavy.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Heavy.woff") format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Thin.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Thin.woff") format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Roman.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Roman.woff") format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Medium.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Medium.woff") format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'helvetica';
+  src: url("../fonts/helvetica/HelveticaNeueCyr-Bold.woff2") format('woff2'), url("../fonts/helvetica/HelveticaNeueCyr-Bold.woff") format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima_nova';
+  src: url("../fonts/proxima_nova/ProximaNova-Regular.woff2") format('woff2'), url("../fonts/proxima_nova/ProximaNova-Regular.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima_nova--condensed';
+  src: url("../fonts/proxima_nova/ProximaNovaCond-Regular.woff2") format('woff2'), url("../fonts/proxima_nova/ProximaNovaCond-Regular.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima_nova';
+  src: url("../fonts/proxima_nova/ProximaNova-Light.woff2") format('woff2'), url("../fonts/proxima_nova/ProximaNova-Light.woff") format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima_nova';
+  src: url("../fonts/proxima_nova/ProximaNova-Bold.woff2") format('woff2'), url("../fonts/proxima_nova/ProximaNova-Bold.woff") format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
