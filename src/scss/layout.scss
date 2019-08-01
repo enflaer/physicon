@@ -4,20 +4,10 @@ html {
   box-sizing: border-box;
   outline: none;
 }
-* {
+*, *:before, *:after {
   outline: none;
   -webkit-box-sizing: inherit;
   box-sizing: inherit;
-  &:before {
-    outline: none;
-    -webkit-box-sizing: inherit;
-    box-sizing: inherit;
-  }
-  &:after {
-    outline: none;
-    -webkit-box-sizing: inherit;
-    box-sizing: inherit;
-  }
 }
 body {
   display: flex;

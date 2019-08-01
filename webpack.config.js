@@ -5,7 +5,7 @@ const glob = require("glob");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -56,9 +56,9 @@ module.exports = {
             {
                 test: /\.pug$/,
                 exclude: ['/node_modules/', '/src/pug/partials'],
-                loader: 'pug-loader', 
-                query: { 
-                    pretty:true
+                loader: 'pug-loader',
+                query: {
+                    pretty: true
                 }
             },
             {
@@ -86,6 +86,14 @@ module.exports = {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
+            {
+                test: /\.(woff|woff2)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 4096,
+                    name: './fonts/[name].[ext]?[hash]', // was '/fonts/[name].[ext]?[hash]',
+                },
+            },
         ]
     },
     plugins: pluginsOptions,
@@ -109,5 +117,16 @@ module.exports = {
         errorDetails: true,
         warnings: true,
         publicPath: false
+    },
+    devServer: {
+        clientLogLevel: 'warning',
+        historyApiFallback: true,
+        hot: true,
+        publicPath: "/",
+        inline: true,
+        overlay: true,
+        contentBase: 'dist',
+        host: 'localhost',
+        port: 9005
     },
 };
