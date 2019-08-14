@@ -1,0 +1,102 @@
+@import "~swiper/dist/css/swiper.min";
+
+$slider-top-tc-primary: #c4c4c4;
+$slider-top-tc-secondary: #525252;
+
+.slider-top {
+  &-container {
+    width: 100%;
+    height: 735px;
+    @media screen and (max-width: 767px) {
+      height: 450px;
+    }
+  }
+
+  &-wrapper {
+    height: 735px;
+    @media screen and (max-width: 767px) {
+      height: 450px;
+    }
+  }
+
+  &-slide {
+    text-align: center;
+    font-family: $main-font;
+    font-size: $font-size + 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 735px;
+
+    background-position: center right;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    position: relative;
+    @media screen and (max-width: 767px) {
+      height: 450px;
+    }
+
+    &__header {
+      position: absolute;
+      left: 16.5%;
+      top: 16.5%;
+
+      font-size: 40px;
+      font-family: $main-font;
+      line-height: 1.25;
+      font-weight: 500;
+      text-align: left;
+      @media screen and (max-width: 767px) {
+        top: 5%;
+        left: 50%;
+        font-size: 28px;
+        transform: translateX(-50%);
+      }
+        &--light {
+        color: $slider-top-tc-primary;
+      }
+
+      &--dark {
+        color: $slider-top-tc-secondary;
+      }
+    }
+    &__btn {
+      margin-top: 25px;
+    }
+    &-ral {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: absolute;
+      left: 16.5%;
+      bottom: 10%;
+      & svg {
+        width: 57px;
+        height: 57px;
+      }
+      &__text {
+        text-align: left;
+        color: #525252;
+        font-size: 14px;
+        line-height: 1.25;
+        font-weight: 500;
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+.swiper-pagination-bullet {
+  background: transparent;
+  border: 2px solid #fff;
+  opacity: 1;
+  width: 15px;
+  height: 15px;
+}
+.swiper-pagination-bullet-active {
+  background: #fff;
+  border: 2px solid transparent;
+  width: 15px;
+  height: 15px;
+}
