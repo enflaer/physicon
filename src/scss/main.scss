@@ -1,7 +1,16 @@
 @import "~bootstrap/scss/bootstrap-grid";
 @import "~bootstrap/scss/bootstrap-reboot";
+
+@import "./variables.scss";
 @import "./fonts.scss";
 @import "./styles.scss";
 @import "./layout.scss";
+@import "./buttons.scss";
+@import "./helper.scss";
+@import "./modals.scss";
+@import "./yt.scss";
 
+@import "../components/pp-tt/pp-tt.scss";
+@import "../components/pp-tt/pp-tt.scss";
+@import "../components/slider-top/slider-top.scss";
 

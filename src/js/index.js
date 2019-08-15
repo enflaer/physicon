@@ -97,9 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
   let modalMail = new Modal('mailto');
   
+  btnJs ?
   btnJs.addEventListener('click', function () {
     modalMail.modalToggle();
-  });
+  }) : () => {return false};
   
   // youtube lazy loading
   

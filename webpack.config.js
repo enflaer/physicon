@@ -10,6 +10,7 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 let pluginsOptions = [
   new CleanWebpackPlugin(),
@@ -91,8 +92,24 @@ module.exports = (env, argv) => ({
               hmr: argv.mode === 'development',
             },
           },
-          'css-loader',
-          'sass-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: argv.mode === 'development',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')()],
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: argv.mode === 'development',
+            },
+          }
         ],
       },
       {
