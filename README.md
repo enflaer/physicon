@@ -1,8 +1,8 @@
 # Boilerplate template
 
-npm i - install all dependencies<br>
+<strong>npm prune</strong> - installing dependencies and removing all unused packages
+<strong>npm i</strong> - install all dependencies<br>
 
-npm run dev - starting development bundling, all things will be in /dist<br>
-npm run build - starting production bundling, all things will be in /dist<br>
-npm run watch - starting development bundling, all things will be in /dist and looking for changes until breaks<br>
-npm run start - starting development bundling and server, all things will be in /dist<br>
+<strong>npm run dev</strong> - starting development bundling, server, all things will be in /dist. There are no minification, all files will beas is.<br>
+
+<strong>npm run prod</strong> - starting production bundling, all things will be minified in /dist.
