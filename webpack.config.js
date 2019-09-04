@@ -73,7 +73,7 @@ module.exports = (env, argv) => ({
       {
         enforce: 'pre',
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /node_modules\/(?!(dom7|swiper)\/).*/],
         loader: 'eslint-loader',
         options: {
           fix: true,
