@@ -11,15 +11,23 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 let pluginsOptions = [
   new CleanWebpackPlugin(),
   new WebpackMd5Hash(),
+  new FriendlyErrorsWebpackPlugin({
+    compilationSuccessInfo: {
+      messages: ['You application is running here http://localhost:9006'],
+      notes: ['Some additionnal notes to be displayed unpon successful compilation']
+    },
+    clearConsole: true,
+  }),
   new MiniCssExtractPlugin({
     filename: './css/[name].css',
     chunkFilename: './css/[id].css',
   }),
-
+  
   new CopyWebpackPlugin([{
     from: './src/fonts',
     to: './fonts'
@@ -37,7 +45,7 @@ let pluginsOptions = [
       to: './'
     },
   ]),
-  new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
+  new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}),
 ];
 
 let pages = glob.sync(__dirname + '/src/*.pug');
@@ -63,24 +71,34 @@ module.exports = (env, argv) => ({
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          fix: true,
+        },
+      },
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/, /node_modules\/(?!(dom7|swiper)\/).*/],
+        include: path.resolve(__dirname, 'src/js'),
+        use:
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [["minify", {
+                "builtIns": false
+              }]],
+            }
+          },
+      },
+      {
         test: /\.pug$/,
         exclude: ['/node_modules/', '/src/pug/partials'],
         loader: 'pug-loader',
         query: {
           pretty: true
-        }
-      },
-      {
-        test: /\.js$/,
-        exclude: [/node_modules/, /node_modules\/(?!(dom7|swiper)\/).*/] ,
-        include: path.resolve(__dirname, 'src/js'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [["minify", {
-              "builtIns": false
-            }]],
-          }
         }
       },
       {
@@ -143,7 +161,57 @@ module.exports = (env, argv) => ({
   },
   plugins: pluginsOptions,
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    splitChunks: {
+      chunks(chunk) {
+        return chunk.name !== 'my-excluded-chunk';
+      },
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      automaticNameMaxLength: 30,
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace('@', '')}`;
+          }
+        },
+        styles: {
+          test: /\.css$/,
+          name: 'styles',
+          chunks: 'all',
+          enforce: true
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    },
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({
+      cssProcessorPluginOptions: {
+        preset: [
+          'default',
+          {
+            discardComments: {
+              removeAll: true
+            }
+          }
+        ],
+      }
+    }),
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+      })
+    ],
+    
   },
   stats: {
     colors: true,
@@ -158,10 +226,11 @@ module.exports = (env, argv) => ({
     source: false,
     errors: true,
     errorDetails: true,
-    warnings: true,
+    warnings: false,
     publicPath: false
   },
   devServer: {
+    quiet: true,
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
