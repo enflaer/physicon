@@ -43,3 +43,14 @@ a.btn--tertiary, .btn--tertiary {
   }
 }
 
+.btn-js-submit {
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  & .btn:not(:last-child) {
+    margin-right: 10px;
+  }
+}

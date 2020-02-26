@@ -1,7 +1,9 @@
-$primary-color         : #223868;
-$primary-color-hover   : #1b3356;
+$primary-color         : #2C4381;
+$primary-color-hover   : lighten($primary-color, 10%);
 $secondary-color       : $primary-color ;
 $secondary-color-hover : $primary-color-hover;
+$tertiary-color        : #C60101;
+$tertiary-color-hover  : darken(#C60101, 10);
 $footer-bg             : $primary-color ;
 $footer-copyright-bg   : $primary-color ;
 $bg                    : #ffffff;
@@ -22,10 +24,11 @@ $header-text-color      : #333;
 
 $block-gray-background : #e1e1e1;
 
-$link-color   : #033f69;
-$link-hover   : lighten(#033f69, 10);
-$link-active  : lighten(#033f69, 10);
-$link-visited : #033f69;
+$link-color            : #2C4381;
+$link-color--lighten   : lighten(#033f69, 10);
+$link-hover            : darken(#033f69, 10);
+$link-active           : darken(#033f69, 10);
+$link-visited          : #2C4381;
 
 $form-focus-control-color    : $gray-line;
 $form-error-text-color       : #dc2c4d;
