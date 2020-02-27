@@ -2,15 +2,15 @@
 
 ## Basic usage
 
-1. #####Clone project
+1. Clone project
 ```
 git clone https://github.com/enflaer/boilerplate-template.git
 ```
-1. #####Install dependencies
+2. Install dependencies
 ```
 npm i -> npm ci
 ```
-1. #####Modes
+3. Modes
 
 <strong>Dev:</strong>
 ```
