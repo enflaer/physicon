@@ -6,8 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -27,36 +26,42 @@ const pluginsOptions = [
     filename: './css/[name].css',
     chunkFilename: './css/[id].css',
   }),
-
+  
   new CopyWebpackPlugin([{
     from: './src/fonts',
     to: './fonts',
   },
-  {
-    from: './src/favicon',
-    to: './favicon',
-  },
-  {
-    from: './src/img',
-    to: './img',
-  },
-  {
-    from: './src/send.php',
-    to: './',
-  },
+    {
+      from: './src/favicon',
+      to: './favicon',
+    },
+    {
+      from: './src/img',
+      to: './img',
+    },
+    new ImageminPlugin({
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      disable: process.env.NODE_ENV !== 'production',
+      pngquant: {
+        quality: '80-90'
+      }
+    }),
+    {
+      from: './src/send.php',
+      to: './',
+    },
   ]),
-  new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}),
 ];
 
 const pages = glob.sync(__dirname + '/src/*.pug');
-pages.forEach(function(file) {
+pages.forEach(function (file) {
   const base = path.basename(file, '.pug');
   pluginsOptions.push(
-      new HtmlWebpackPlugin({
-        filename: './' + base + '.html',
-        template: './src/' + base + '.pug',
-        inject: true,
-      })
+    new HtmlWebpackPlugin({
+      filename: './' + base + '.html',
+      template: './src/' + base + '.pug',
+      inject: true,
+    })
   );
 });
 
@@ -64,7 +69,7 @@ module.exports = (env, argv) => ({
   entry: ['./src/js/index.js', './src/scss/main.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: argv.mode === 'development' ? '[name].js' : '[name].js',
+    filename: argv.mode === 'development' ? '[name].js' : '[name].js?[hash]',
     publicPath: '/',
   },
   devtool: 'source-map',
@@ -189,24 +194,31 @@ module.exports = (env, argv) => ({
         },
       },
     },
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({
-      cssProcessorPluginOptions: {
-        preset: [
-          'default',
-          {
-            discardComments: {
-              removeAll: true,
-            },
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: argv.mode === 'development',
+        cache: argv.mode !== 'development',
+        parallel: true,
+        terserOptions: {
+          compress: {
+            drop_console: argv.mode !== 'development',
           },
-        ],
-      },
-    }),
-    new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-    }),
+        },
+      }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorPluginOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true,
+              },
+            },
+          ],
+        },
+      }),
     ],
-
+    
   },
   stats: {
     colors: true,
