@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-
+import {ImgLazy} from './imgLazy';
 
 document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('js-submit-mailto');
@@ -149,21 +149,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
-  // mobile menu TODO Rewrite to vanilla js
-  // const mobMenu = document.querySelector('#header-mobile-menu');
+
+  // mobile menu
+
+  const mobMenu = document.querySelector('#header-mobile-menu');
   const mobMenuFire = document.querySelector('#header__mobile-menu-button');
   // event click
   mobMenuFire.addEventListener('click', function() {
     // self
     const mobMenuFireState = this;
     // logic
-    if (mobMenuFireState.classList.contains('active')) {
-      mobMenuFireState.classList.remove('active');
-      // mobMenu.slideUp();
-    } else {
-      mobMenuFireState.classList.add('active');
-      // mobMenu.slideDown();
-    }
+    mobMenuFireState.classList.toggle('active');
+    mobMenu.classList.toggle('slideInDown');
+    mobMenu.classList.toggle('slideOutUp');
   });
+  // lazy loading images
+  new ImgLazy('main img').lazyInit();
 });
 

@@ -22,10 +22,6 @@ const pluginsOptions = [
     },
     clearConsole: true,
   }),
-  new MiniCssExtractPlugin({
-    filename: './css/[name].css',
-    chunkFilename: './css/[id].css',
-  }),
   
   new CopyWebpackPlugin([{
     from: './src/fonts',
@@ -39,13 +35,6 @@ const pluginsOptions = [
       from: './src/img',
       to: './img',
     },
-    new ImageminPlugin({
-      test: /\.(jpe?g|png|gif|svg)$/i,
-      disable: process.env.NODE_ENV !== 'production',
-      pngquant: {
-        quality: '80-90'
-      }
-    }),
     {
       from: './src/send.php',
       to: './',
@@ -69,7 +58,7 @@ module.exports = (env, argv) => ({
   entry: ['./src/js/index.js', './src/scss/main.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: argv.mode === 'development' ? '[name].js' : '[name].js?[hash]',
+    filename: argv.mode === 'development' ? '[name].js' : '[name].[contenthash].js',
     publicPath: '/',
   },
   devtool: 'source-map',
@@ -107,6 +96,7 @@ module.exports = (env, argv) => ({
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
+              sourceMap: argv.mode === 'development',
               hmr: argv.mode === 'development',
             },
           },
@@ -119,6 +109,7 @@ module.exports = (env, argv) => ({
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: argv.mode === 'development',
               plugins: () => [require('autoprefixer')()],
             },
           },
@@ -139,7 +130,7 @@ module.exports = (env, argv) => ({
         loader: 'url-loader',
         options: {
           limit: 4096,
-          name: './fonts/[name].[ext]?[hash]', // was '/fonts/[name].[ext]?[hash]',
+          name: './fonts/[name].[ex.[contenthash]t]', // was '/fonts/[name].[ex.[contenthash]t]',
         },
       },
       {
@@ -157,9 +148,22 @@ module.exports = (env, argv) => ({
           limit: 10 * 1024,
         },
       },
+      
     ],
   },
-  plugins: pluginsOptions,
+  plugins: [
+    new ImageminPlugin({
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      disable: argv.mode === 'development',
+      pngquant: {
+        quality: '80-90'
+      }
+    }),
+    new MiniCssExtractPlugin({
+      filename: argv.mode === 'development' ? './css/[name].css' : "./css/[name].[contenthash].css",
+      chunkFilename: argv.mode === 'development' ? './css/[id].css' : './css/[id].[contenthash].css',
+    }),
+  ].concat(pluginsOptions),
   optimization: {
     splitChunks: {
       chunks(chunk) {

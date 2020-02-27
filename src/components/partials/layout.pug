@@ -20,10 +20,13 @@ html(lang="ru")
 
   body
     block page
-      include ./header.pug
-      include ./header-mobile.pug
+      header.header-section
+        include ./header.pug
+        include ./header-mobile.pug
 
-      block contentBlock
+      main.main-content
+        block contentBlock
 
       include ./footer.pug
+      include ./modals.pug
 
