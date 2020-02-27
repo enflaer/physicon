@@ -85,10 +85,10 @@ module.exports = (env, argv) => ({
       {
         test: /\.pug$/,
         exclude: ['/node_modules/', '/src/pug/partials'],
-        loader: 'pug-loader',
-        query: {
-          pretty: true,
-        },
+        use: [
+          "html-loader",
+          "pug-html-loader"
+        ]
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -249,6 +249,7 @@ module.exports = (env, argv) => ({
     inline: true,
     overlay: true,
     contentBase: 'dist',
+    watchContentBase: true,
     host: 'localhost',
     port: 9006,
   },
