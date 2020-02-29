@@ -22,18 +22,11 @@ const pluginsOptions = [
     },
     clearConsole: true,
   }),
-  
-  new CopyWebpackPlugin([{
-    from: './src/fonts',
-    to: './fonts',
-  },
-    {
-      from: './src/favicon',
-      to: './favicon',
-    },
+
+  new CopyWebpackPlugin([
     {
       from: './src/img',
-      to: './img',
+      to: './public/img',
     },
     {
       from: './src/send.php',
@@ -59,7 +52,7 @@ module.exports = (env, argv) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: argv.mode === 'development' ? '[name].js' : '[name].[contenthash].js',
-    publicPath: '/',
+    publicPath: '/public',
   },
   devtool: 'source-map',
   module: {
@@ -130,7 +123,7 @@ module.exports = (env, argv) => ({
         loader: 'url-loader',
         options: {
           limit: 4096,
-          name: './fonts/[name].[ex.[contenthash]t]', // was '/fonts/[name].[ex.[contenthash]t]',
+          name: './public/fonts/[name].[contenthash].[ext]',
         },
       },
       {
@@ -148,7 +141,7 @@ module.exports = (env, argv) => ({
           limit: 10 * 1024,
         },
       },
-      
+
     ],
   },
   plugins: [
@@ -160,8 +153,8 @@ module.exports = (env, argv) => ({
       }
     }),
     new MiniCssExtractPlugin({
-      filename: argv.mode === 'development' ? './css/[name].css' : "./css/[name].[contenthash].css",
-      chunkFilename: argv.mode === 'development' ? './css/[id].css' : './css/[id].[contenthash].css',
+      filename: argv.mode === 'development' ? './public/css/[name].css' : "./public/css/[name].[contenthash].css",
+      chunkFilename: argv.mode === 'development' ? './public/css/[id].css' : './public/css/[id].[contenthash].css',
     }),
   ].concat(pluginsOptions),
   optimization: {
@@ -222,7 +215,7 @@ module.exports = (env, argv) => ({
         },
       }),
     ],
-    
+
   },
   stats: {
     colors: true,
