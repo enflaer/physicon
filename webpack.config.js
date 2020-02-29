@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -52,7 +52,7 @@ module.exports = (env, argv) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: argv.mode === 'development' ? '[name].js' : '[name].[contenthash].js',
-    publicPath: '/public',
+    publicPath: '/',
   },
   devtool: 'source-map',
   module: {
