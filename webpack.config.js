@@ -26,7 +26,7 @@ const pluginsOptions = [
   new CopyWebpackPlugin([
     {
       from: './src/img',
-      to: './public/img',
+      to: './assets/img',
     },
     {
       from: './src/send.php',
@@ -50,8 +50,8 @@ pages.forEach(function (file) {
 module.exports = (env, argv) => ({
   entry: ['./src/js/index.js', './src/scss/main.scss'],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: argv.mode === 'development' ? '[name].js' : '[name].[contenthash].js',
+    path: path.resolve(__dirname, 'dist/'),
+    filename: argv.mode === 'development' ? 'assets/js/[name].js' : 'assets/js/[name].[contenthash].js',
     publicPath: '/',
   },
   devtool: 'source-map',
@@ -123,7 +123,7 @@ module.exports = (env, argv) => ({
         loader: 'url-loader',
         options: {
           limit: 4096,
-          name: './public/fonts/[name].[contenthash].[ext]',
+          name: './assets/fonts/[name].[contenthash].[ext]',
         },
       },
       {
@@ -153,8 +153,8 @@ module.exports = (env, argv) => ({
       }
     }),
     new MiniCssExtractPlugin({
-      filename: argv.mode === 'development' ? './public/css/[name].css' : "./public/css/[name].[contenthash].css",
-      chunkFilename: argv.mode === 'development' ? './public/css/[id].css' : './public/css/[id].[contenthash].css',
+      filename: argv.mode === 'development' ? './assets/css/[name].css' : "./assets/css/[name].[contenthash].css",
+      chunkFilename: argv.mode === 'development' ? './assets/css/[id].css' : './assets/css/[id].[contenthash].css',
     }),
   ].concat(pluginsOptions),
   optimization: {
