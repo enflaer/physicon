@@ -153,8 +153,8 @@ module.exports = (env, argv) => ({
       }
     }),
     new MiniCssExtractPlugin({
-      filename: argv.mode === 'development' ? './assets/css/[name].css' : "./assets/css/[name].[contenthash].css",
-      chunkFilename: argv.mode === 'development' ? './assets/css/[id].css' : './assets/css/[id].[contenthash].css',
+      filename: argv.mode === 'development' ? 'assets/css/[name].css' : "assets/css/[name].[contenthash].css",
+      chunkFilename: argv.mode === 'development' ? 'assets/css/[id].css' : 'assets/css/[id].[contenthash].css',
     }),
   ].concat(pluginsOptions),
   optimization: {
