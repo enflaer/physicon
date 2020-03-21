@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
@@ -6,11 +7,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const fileloader = require('file-loader');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const pluginsOptions = [
@@ -23,40 +23,33 @@ const pluginsOptions = [
     },
     clearConsole: true,
   }),
-  new MiniCssExtractPlugin({
-    filename: './css/[name].css',
-    chunkFilename: './css/[id].css',
-  }),
 
-  new CopyWebpackPlugin([{
-    from: './src/fonts',
-    to: './fonts',
-  },
-  {
-    from: './src/favicon',
-    to: './favicon',
-  },
-  {
-    from: './src/img',
-    to: './img',
-  },
-  {
-    from: './src/send.php',
-    to: './',
-  },
+  new CopyWebpackPlugin([
+    {
+      from: './src/test.json',
+      to: './',
+    },
+    {
+      from: './src/img',
+      to: './assets/img',
+    },
+    {
+      from: './src/send.php',
+      to: './',
+    },
   ]),
-  new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}),
 ];
 
 const pages = glob.sync(__dirname + '/src/*.pug');
 pages.forEach(function(file) {
   const base = path.basename(file, '.pug');
   pluginsOptions.push(
-      new HtmlWebpackPlugin({
-        filename: './' + base + '.html',
-        template: './src/' + base + '.pug',
-        inject: true,
-      })
+    new HtmlWebpackPlugin({
+      filename: './' + base + '.html',
+      template: './src/' + base + '.pug',
+      inject: true,
+      minify: false,
+    }),
   );
 });
 
@@ -64,7 +57,7 @@ module.exports = (env, argv) => ({
   entry: ['./src/js/index.js', './src/scss/main.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: argv.mode === 'development' ? '[name].js' : '[name].js',
+    filename: argv.mode === 'development' ? 'assets/js/[name].js' : 'assets/js/[name].[contenthash].js',
     publicPath: '/',
   },
   devtool: 'source-map',
@@ -84,17 +77,25 @@ module.exports = (env, argv) => ({
         exclude: [/node_modules/, /node_modules\/(?!(dom7|swiper)\/).*/],
         loader: 'babel-loader',
         options: {
-          configFile: path.resolve(__dirname, 'babel.config.js')
+          configFile: path.resolve(__dirname, 'babel.config.js'),
         },
         include: path.resolve(__dirname, 'src/js'),
       },
       {
         test: /\.pug$/,
         exclude: ['/node_modules/', '/src/pug/partials'],
-        loader: 'pug-loader',
-        query: {
-          pretty: true,
-        },
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+            },
+          },
+          {
+            loader: 'pug-html-loader',
+            options: {
+            },
+          },
+        ],
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -102,6 +103,7 @@ module.exports = (env, argv) => ({
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
+              sourceMap: argv.mode === 'development',
               hmr: argv.mode === 'development',
             },
           },
@@ -114,6 +116,7 @@ module.exports = (env, argv) => ({
           {
             loader: 'postcss-loader',
             options: {
+              sourceMap: argv.mode === 'development',
               plugins: () => [require('autoprefixer')()],
             },
           },
@@ -134,77 +137,58 @@ module.exports = (env, argv) => ({
         loader: 'url-loader',
         options: {
           limit: 4096,
-          name: './fonts/[name].[ext]?[hash]', // was '/fonts/[name].[ext]?[hash]',
+          name: './assets/fonts/[name].[contenthash].[ext]',
         },
       },
       {
-        test: /\.(jpg|png|gif|svg)$/,
-        loader: 'image-webpack-loader',
-        // Specify enforce: 'pre' to apply the loader
-        // before url-loader/svg-url-loader
-        // and not duplicate it in rules with them
-        enforce: 'pre',
-      },
-      {
-        test: /\.(jpe?g|png|gif)$/,
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
-          limit: 10 * 1024,
+          emitFile: true,
+          name: '[path][name].[ext]',
         },
+        test: /\.(jpe?g|png|gif|svg)$/i,
       },
     ],
   },
-  plugins: pluginsOptions,
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: argv.mode === 'development' ? 'assets/css/[name].css' : 'assets/css/[name].[contenthash].css',
+      chunkFilename: argv.mode === 'development' ? 'assets/css/[name].css' : 'assets/css/[name].[contenthash].css',
+    }),
+    new webpack.ProvidePlugin({
+      'window.YoutubeLazyLoad': '/assets/js/youtubeLazyLoad.js',
+    }),
+  ].concat(pluginsOptions),
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
-      chunks(chunk) {
-        return chunk.name !== 'my-excluded-chunk';
-      },
-      minSize: 30000,
-      maxSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      automaticNameDelimiter: '~',
-      automaticNameMaxLength: 30,
-      name: true,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            return `npm.${packageName.replace('@', '')}`;
-          },
-        },
-        styles: {
-          test: /\.css$/,
-          name: 'styles',
-          chunks: 'all',
-          enforce: true,
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
     },
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({
-      cssProcessorPluginOptions: {
-        preset: [
-          'default',
-          {
-            discardComments: {
-              removeAll: true,
-            },
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: argv.mode === 'development',
+        cache: argv.mode !== 'development',
+        parallel: true,
+        terserOptions: {
+          compress: {
+            drop_console: argv.mode !== 'development',
           },
-        ],
-      },
-    }),
-    new UglifyJsPlugin({
-      cache: true,
-      parallel: true,
-    }),
+        },
+      }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorPluginOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true,
+              },
+            },
+          ],
+        },
+      }),
     ],
 
   },
@@ -233,7 +217,8 @@ module.exports = (env, argv) => ({
     inline: true,
     overlay: true,
     contentBase: 'dist',
-    host: 'localhost',
+    watchContentBase: true,
+    host: '192.168.105.209',
     port: 9006,
   },
 });
