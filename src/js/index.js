@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // yt lazyLoad
   new YoutubeLazyLoad('.youtube').init();
 
-
   // lazy loading images
   new ImgLazy([]).lazyInit();
+
 });
 

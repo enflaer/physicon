@@ -41,15 +41,14 @@ const pluginsOptions = [
 ];
 
 const pages = glob.sync(__dirname + '/src/*.pug');
-pages.forEach(function(file) {
+pages.forEach(function (file) {
   const base = path.basename(file, '.pug');
   pluginsOptions.push(
     new HtmlWebpackPlugin({
       filename: './' + base + '.html',
       template: './src/' + base + '.pug',
       inject: true,
-      minify: false,
-    }),
+    })
   );
 });
 
@@ -148,15 +147,13 @@ module.exports = (env, argv) => ({
         },
         test: /\.(jpe?g|png|gif|svg)$/i,
       },
+
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: argv.mode === 'development' ? 'assets/css/[name].css' : 'assets/css/[name].[contenthash].css',
       chunkFilename: argv.mode === 'development' ? 'assets/css/[name].css' : 'assets/css/[name].[contenthash].css',
-    }),
-    new webpack.ProvidePlugin({
-      'window.YoutubeLazyLoad': '/assets/js/youtubeLazyLoad.js',
     }),
   ].concat(pluginsOptions),
   optimization: {
@@ -218,7 +215,7 @@ module.exports = (env, argv) => ({
     overlay: true,
     contentBase: 'dist',
     watchContentBase: true,
-    host: '192.168.105.209',
+    host: 'localhost',
     port: 9006,
   },
 });

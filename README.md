@@ -1,8 +1,25 @@
 # Boilerplate template
 
-<strong>npm prune</strong> - installing dependencies and removing all unused packages
-<strong>npm i</strong> - install all dependencies<br>
+## Basic usage
 
-<strong>npm run dev</strong> - starting development bundling, server, all things will be in /dist. There are no minification, all files will beas is.<br>
+1. Clone project
+```
+git clone https://github.com/enflaer/boilerplate-template.git
+```
+2. Install dependencies
+```
+npm i -> npm ci
+```
+3. Modes
 
-<strong>npm run prod</strong> - starting production bundling, all things will be minified in /dist.
+<strong>Dev:</strong>
+```
+npm run dev
+```
+Starting development bundling, server, all the things will be in /dist. There are no minification, all files will be as is.
+
+<strong>Prod:</strong>
+```
+npm run prod
+```
+Starting production bundling, all things will be minified in /dist.
