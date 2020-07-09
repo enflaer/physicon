@@ -1,12 +1,10 @@
 a.link {
   display: inline-block;
   text-decoration: none;
-  color: $secondary-color;
-  border-bottom: 1px solid $secondary-color;
+  color: $primary-color;
   transition: all .3s ease-in-out;
   &:hover {
-    color: $secondary-color-hover;
-    border-bottom: 1px solid $secondary-color-hover;
-    text-decoration: none;
+    color: $primary-color-hover;
+    text-decoration: underline;
   }
 }

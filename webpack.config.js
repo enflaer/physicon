@@ -30,10 +30,6 @@ const pluginsOptions = [
         from: './src/img',
         to: './assets/img',
       },
-      {
-        from: './src/send.php',
-        to: './',
-      },
     ],
   }),
 ];
@@ -213,7 +209,7 @@ module.exports = (env, argv) => ({
     overlay: true,
     contentBase: 'dist',
     watchContentBase: true,
-    host: 'localhost',
+    host: '192.168.0.29',
     port: 9006,
   },
 });

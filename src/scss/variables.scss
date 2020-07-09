@@ -1,5 +1,5 @@
-$primary-color         : #2C4381;
-$primary-color-hover   : lighten($primary-color, 10%);
+$primary-color         : #00c1ff;
+$primary-color-hover   : #00aee6;
 $secondary-color       : $primary-color ;
 $secondary-color-hover : $primary-color-hover;
 $tertiary-color        : #C60101;
@@ -41,8 +41,8 @@ $z-index-header-modal-form : 3000;
 $z-index-header--fixed     : 1000;
 $footer-z-index            : 1900;
 
-$main-font   : 'helvetica', Helvetica, sans-serif;
-$second-font : 'gotham', Helvetica, sans-serif;
+$main-font   : "Segoe UI", 'helvetica', Arial, sans-serif;
+$second-font : Helvetica, sans-serif;
 $mono-font   : Menlo, Monaco, Consolas, 'Courier New', monospace;
 
 $font-size   : 16px;

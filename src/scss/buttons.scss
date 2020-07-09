@@ -1,15 +1,15 @@
 a.btn, .btn {
-  height: 40px;
+  height: 25px;
   max-width: 160px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   font-family: $main-font;
-  font-weight: 500;
+  font-weight: 400;
   border-width: 0;
-  border-radius: 0;
+  border-radius: 6px;
   background-position: center center;
   border-style: solid;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;

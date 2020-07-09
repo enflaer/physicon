@@ -1,0 +1,55 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: solid 1px #b5b5b5;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 55px;
+
+  &__image {
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-width: 170px;
+    max-height: 130px;
+  }
+
+  &-body {
+    padding: 10px 16px;
+
+    &__subject, &__grade {
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    &__grade {
+      margin-top: -.2em;
+    }
+
+    &__genre {
+      margin-top: .5em;
+      font-size: 11px;
+      color: #3c3c3b;
+    }
+
+    &__more {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    &__price {
+
+    }
+
+    &__more {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    &__price {
+      margin-top: .4em;
+    }
+  }
+}

@@ -4,6 +4,7 @@
 
 @import "./variables.scss";
 @import "./fonts.scss";
+@import "./links.scss";
 @import "./styles.scss";
 @import "./layout.scss";
 @import "./buttons.scss";
@@ -11,6 +12,4 @@
 @import "./modals.scss";
 @import "./yt.scss";
 
-@import "./particles/header.scss";
-@import "./particles/header-mobile.scss";
-
+@import "../components/card/card.scss";
