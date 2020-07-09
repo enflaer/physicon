@@ -46,6 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // lazy loading images
   new ImgLazy([]).lazyInit();
-
 });
 

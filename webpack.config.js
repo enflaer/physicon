@@ -24,31 +24,29 @@ const pluginsOptions = [
     clearConsole: true,
   }),
 
-  new CopyWebpackPlugin([
-    {
-      from: './src/test.json',
-      to: './',
-    },
-    {
-      from: './src/img',
-      to: './assets/img',
-    },
-    {
-      from: './src/send.php',
-      to: './',
-    },
-  ]),
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: './src/img',
+        to: './assets/img',
+      },
+      {
+        from: './src/send.php',
+        to: './',
+      },
+    ],
+  }),
 ];
 
 const pages = glob.sync(__dirname + '/src/*.pug');
-pages.forEach(function (file) {
+pages.forEach(function(file) {
   const base = path.basename(file, '.pug');
   pluginsOptions.push(
-    new HtmlWebpackPlugin({
-      filename: './' + base + '.html',
-      template: './src/' + base + '.pug',
-      inject: true,
-    })
+      new HtmlWebpackPlugin({
+        filename: './' + base + '.html',
+        template: './src/' + base + '.pug',
+        inject: true,
+      })
   );
 });
 
