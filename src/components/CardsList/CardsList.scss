@@ -1,0 +1,38 @@
+.projects-list {
+  &-section {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+}
+
+.popup {
+  &-header {
+    padding: 0;
+    & .close {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      z-index: 999;
+      opacity: .75;
+      font-size: 45px;
+      color: #fff;
+      transition: all .3s ease-in-out;
+      @media screen and (max-width: 767px) {
+        right: 0;
+      }
+      & span {
+        text-shadow: none;
+      }
+      &:not(:disabled):hover {
+        opacity: 1;
+      }
+    }
+  }
+  &-footer {
+    &-description {
+      font-weight: 400;
+      font-size: 18px;
+      color: #6d6d6d;
+    }
+  }
+}
