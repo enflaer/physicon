@@ -9,3 +9,21 @@
 .no-scroll {
   overflow: hidden !important;
 }
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hidden {
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.col-auto {
+  transition: all .3s ease-in-out;
+}

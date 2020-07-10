@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import './Card.scss';
 
 class Card extends Component {
-
+  
   render() {
     return (
-      <div className={'col-auto'}>
+      <div className={['col-auto', this.props.visibility].join(" ")}>
         <div className={'card'}>
           <img className={'card__image'} src={this.props.image} alt="" />
           <div className={'card-body'}>
