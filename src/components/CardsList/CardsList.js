@@ -10,7 +10,6 @@ class CardsList extends Component {
       error: null,
       isLoaded: false,
       items: [],
-      filteredItems: [],
       renderItems: [],
       subjects: [],
       genres: [],
@@ -21,6 +20,7 @@ class CardsList extends Component {
       currentGenre: 'Все жанры',
     };
     
+    this.handleSearchInput = this.handleSearchInput.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handlePriceChange = this.handlePriceChange.bind(this);
   }
@@ -35,7 +35,6 @@ class CardsList extends Component {
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
-        
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
@@ -91,6 +90,18 @@ class CardsList extends Component {
     }
   }
   
+  renderNothing() {
+    return (
+      <div className={'row'}>
+        <h2 className={'col-12 d-flex'}>
+          Результаты поиска:
+        </h2>
+        <div className={'col-12 d-flex justify-content-center mt-3'}>
+          <span>Результатов нет</span>
+        </div>
+      </div>);
+  }
+  
   renderCards() {
     if (this.state.error) {
       return <div>Ошибка: {this.state.error.message}</div>;
@@ -105,6 +116,9 @@ class CardsList extends Component {
     } else {
       return (
         <div className={'row'}>
+          <h2 className={'col-12 d-flex mb-5'}>
+            Результаты поиска:
+          </h2>
           {
             this.state.renderItems.map((value, idx) => (
               <Card key={idx}
@@ -123,6 +137,21 @@ class CardsList extends Component {
     }
   }
   
+  handleSearchInput(event) {
+    const target = event.target;
+    const value = target.value;
+  
+    this.setState({
+      renderItems: this.state.items.filter((item) => {
+        return (
+          item.genre.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+          item.subject.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+          item.grade.toLowerCase().indexOf(value) >= 0
+        );
+      }),
+    });
+  }
+  
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
@@ -132,21 +161,157 @@ class CardsList extends Component {
       [name]: value,
     });
     
-    this.setState({
-      renderItems: this.state.items.filter((item) => {
-        if (value === 'Все жанры' ||
-          value === 'Все предметы' ||
-          value === 'Все классы') {
-          return this.state.items;
-        } else {
-          return (
-            item.genre.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
-            item.subject.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
-            item.grade.toLowerCase().indexOf(value) >= 0
-          );
-        }
-      }),
-    });
+    switch (name) {
+      case 'currentSubject':
+        
+        this.state.items.filter((item) => {
+          if (item.subject === value &&
+            item.genre === this.state.currentGenre &&
+            item.grade.indexOf(this.state.currentGrade) >= 0) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.subject === value &&
+            this.state.currentGenre === 'Все жанры' &&
+            item.grade.indexOf(this.state.currentGrade) >= 0) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.subject === value &&
+            item.genre === this.state.currentGenre &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.subject === value &&
+            this.state.currentGenre === 'Все жанры' &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все предметы' &&
+            this.state.currentGenre === 'Все жанры' &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все предметы' &&
+            item.genre === this.state.currentGenre &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все предметы' &&
+            item.grade === this.state.currentGrade &&
+            this.state.currentGenre === 'Все жанры') {
+            
+            item.visibility = 'visible';
+            
+          } else {
+            item.visibility = 'hidden';
+          }
+        });
+        
+        break;
+      case 'currentGenre':
+        this.state.items.filter((item) => {
+          if (item.genre === value &&
+            item.subject === this.state.currentSubject &&
+            item.grade.indexOf(this.state.currentGrade) >= 0) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.genre === value &&
+            this.state.currentSubject === 'Все предметы' &&
+            item.grade.indexOf(this.state.currentGrade) >= 0) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.genre === value &&
+            item.subject === this.state.currentSubject &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.genre === value &&
+            this.state.currentSubject === 'Все предметы' &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все жанры' &&
+            this.state.currentSubject === 'Все предметы' &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все жанры' &&
+            this.state.currentSubject === 'Все предметы' &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все жанры' &&
+            item.grade.indexOf(this.state.currentGrade) >= 0 &&
+            this.state.currentSubject === 'Все предметы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все жанры' &&
+            item.subject === this.state.currentSubject &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else {
+            item.visibility = 'hidden';
+          }
+        });
+        break;
+      case 'currentGrade':
+        this.state.items.filter((item) => {
+          if (item.grade.indexOf(value) >= 0 &&
+            item.subject === this.state.currentSubject &&
+            item.genre === this.state.currentGenre) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.grade.indexOf(value) >= 0 &&
+            this.state.currentSubject === 'Все предметы' &&
+            item.genre === this.state.currentGenre) {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.grade.indexOf(value) >= 0 &&
+            item.subject === this.state.currentSubject &&
+            this.state.currentGrade === 'Все классы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (item.grade.indexOf(value) >= 0 &&
+            this.state.currentSubject === 'Все предметы' &&
+            this.state.currentGenre === 'Все жанры') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все классы' &&
+            item.genre === this.state.currentGenre &&
+            this.state.currentSubject === 'Все предметы') {
+            
+            item.visibility = 'visible';
+            
+          } else if (value === 'Все классы' &&
+            item.subject === this.state.currentSubject &&
+            this.state.currentGenre === 'Все жанры') {
+            
+            item.visibility = 'visible';
+            
+          } else {
+            item.visibility = 'hidden';
+          }
+        });
+        break;
+    }
   }
   
   handlePriceChange() {
@@ -195,7 +360,7 @@ class CardsList extends Component {
             </select>
           </div>
           <div className="col-3">
-            <input name={'search'} placeholder={"Поиск"} value={this.state.value} onChange={this.handleInputChange}/>
+            <input name={'search'} placeholder={'Поиск'} value={this.state.value} onChange={this.handleSearchInput}/>
           </div>
           <div className="col-3 mt-3">
             <button className={'btn btn--primary'} onClick={this.handlePriceChange}>
