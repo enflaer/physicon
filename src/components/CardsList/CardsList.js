@@ -10,13 +10,15 @@ class CardsList extends Component {
       error: null,
       isLoaded: false,
       items: [],
+      filteredItems: [],
+      renderItems: [],
       subjects: [],
       genres: [],
       grades: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
-      price: "rouble",
-      currentGrade: "Все классы",
-      currentSubject: "Все предметы",
-      currentGenre: "Все жанры"
+      price: 'rouble',
+      currentGrade: 'Все классы',
+      currentSubject: 'Все предметы',
+      currentGenre: 'Все жанры',
     };
     
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -43,10 +45,11 @@ class CardsList extends Component {
         (result) => {
           (result.items).forEach((el) => {
             Object.assign(el, [{visibility: 'visible'}]);
-          })
+          });
           this.setState({
             isLoaded: true,
             items: result.items,
+            renderItems: result.items,
           });
           this.itemsUniqValues();
         },
@@ -87,7 +90,7 @@ class CardsList extends Component {
       return el + ' класс';
     }
   }
-
+  
   renderCards() {
     if (this.state.error) {
       return <div>Ошибка: {this.state.error.message}</div>;
@@ -103,14 +106,14 @@ class CardsList extends Component {
       return (
         <div className={'row'}>
           {
-            this.state.items.map((value, idx) => (
+            this.state.renderItems.map((value, idx) => (
               <Card key={idx}
                     image={'https://www.imumk.ru/svc/coursecover/' + value.courseId}
                     subject={value.subject}
                     grade={this.grades(value.grade)}
                     genre={value.genre}
                     more={value.shopUrl}
-                    price={this.state.price === "rouble" ? value.price + " руб." : value.priceBonus + " бон."}
+                    price={this.state.price === 'rouble' ? value.price + ' руб.' : value.priceBonus + ' бон.'}
                     visibility={value.visibility}
               />
             ))
@@ -126,86 +129,29 @@ class CardsList extends Component {
     const name = target.name;
     
     this.setState({
-      [name]: value
+      [name]: value,
     });
     
-    switch (name) {
-      case "currentSubject":
-        if (value === "Все предметы") {
-          this.state.items.filter((item) => {
-            item.visibility = 'visible';
-            if ((item.grade === this.state.currentGrade && this.state.currentGrade !== undefined) &&
-              (item.genre === this.state.currentGenre && this.state.currentGenre !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
+    this.setState({
+      renderItems: this.state.items.filter((item) => {
+        if (value === 'Все жанры' ||
+          value === 'Все предметы' ||
+          value === 'Все классы') {
+          return this.state.items;
         } else {
-          this.state.items.filter((item) => {
-            if (item.subject === value &&
-              (item.genre === this.state.currentGenre && this.state.currentGenre !== undefined) &&
-              (item.grade === this.state.currentGrade && this.state.currentGrade !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
+          return (
+            item.genre.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.subject.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.grade.toLowerCase().indexOf(value) >= 0
+          );
         }
-        
-        break;
-      case "currentGenre":
-        if (value === "Все жанры") {
-          this.state.items.filter((item) => {
-            item.visibility = 'visible';
-            if ((item.subject === this.state.currentSubject && this.state.currentSubject !== undefined) &&
-              (item.grade === this.state.currentGrade && this.state.currentGrade !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
-        } else {
-          this.state.items.filter((item) => {
-            if (item.genre === value &&
-              (item.subject === this.state.currentSubject && this.state.currentSubject !== undefined) &&
-              (item.grade === this.state.currentGrade && this.state.currentGrade !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
-        }
-        break;
-      case "currentGrade":
-        if (value === "Все классы")  {
-          this.state.items.filter((item) => {
-            item.visibility = 'visible';
-            if ((item.subject === this.state.currentSubject && this.state.currentSubject !== undefined) &&
-              (item.genre === this.state.currentGenre && this.state.currentGenre !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
-        } else {
-          this.state.items.filter((item) => {
-            if (item.grade === value &&
-              (item.subject === this.state.currentSubject && this.state.currentSubject !== undefined) &&
-              (item.genre === this.state.currentGenre && this.state.currentGenre !== undefined)) {
-              item.visibility = 'visible';
-            } else {
-              item.visibility = 'hidden';
-            }
-          });
-        }
-        break;
-    }
+      }),
+    });
   }
   
   handlePriceChange() {
     this.setState({
-      price: this.state.price === "rouble" ? "bonus" : "rouble",
+      price: this.state.price === 'rouble' ? 'bonus' : 'rouble',
     });
   }
   
@@ -219,8 +165,8 @@ class CardsList extends Component {
         </div>
         <div className={'row inputs-row'}>
           <div className="col-3">
-            <select name={"currentSubject"} value={this.state.value} onChange={this.handleInputChange}>
-              <option value={"Все предметы"}>Все предметы</option>
+            <select name={'currentSubject'} value={this.state.value} onChange={this.handleInputChange}>
+              <option value={'Все предметы'}>Все предметы</option>
               {
                 this.state.subjects.map((value, idx) => (
                   <option key={idx} value={value}>{value}</option>
@@ -229,8 +175,8 @@ class CardsList extends Component {
             </select>
           </div>
           <div className="col-3">
-            <select name={"currentGenre"} value={this.state.value} onChange={this.handleInputChange}>
-              <option value={"Все жанры"}>Все жанры</option>
+            <select name={'currentGenre'} value={this.state.value} onChange={this.handleInputChange}>
+              <option value={'Все жанры'}>Все жанры</option>
               {
                 this.state.genres.map((value, idx) => (
                   <option key={idx} value={value}>{value}</option>
@@ -239,8 +185,8 @@ class CardsList extends Component {
             </select>
           </div>
           <div className="col-3">
-            <select name={"currentGrade"} value={this.state.value} onChange={this.handleInputChange}>
-              <option value={"Все классы"}>Все классы</option>
+            <select name={'currentGrade'} value={this.state.value} onChange={this.handleInputChange}>
+              <option value={'Все классы'}>Все классы</option>
               {
                 this.state.grades.map((value, idx) => (
                   <option key={idx} value={value}>{value}</option>
@@ -249,10 +195,10 @@ class CardsList extends Component {
             </select>
           </div>
           <div className="col-3">
-            <input name={"search"} value={this.state.value} onChange={this.handleInputChange} />
+            <input name={'search'} placeholder={"Поиск"} value={this.state.value} onChange={this.handleInputChange}/>
           </div>
           <div className="col-3 mt-3">
-            <button className={"btn btn--primary"} onClick={this.handlePriceChange}>
+            <button className={'btn btn--primary'} onClick={this.handlePriceChange}>
               рубли/бонусы
             </button>
           </div>
